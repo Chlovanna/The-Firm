@@ -1,4 +1,4 @@
-INSERT INTO departments (id, name)
+INSERT INTO departments (id, department_name)
 VALUES
 (1, "Advisory"),
 (2, "Auditing and Assurance"),
@@ -7,14 +7,14 @@ VALUES
 
 INSERT INTO roles (id, title, salary, department_id) 
 VALUES
-(1,"TAS Director",205000,1),
+(1,"TAS Partner",205000,1),
 (2,"ERM Director",185000,1),
 (3,"Chief Risk Officer",305000,2),
 (4,"IT Audit Director",250000,2),
 (5,"Senior Tax Manager",250000,3),
 (6,"Tax Manager",150000,3),
 (7,"CEO",1750000,4),
-(8,"CFO"950000,4);
+(8,"CFO",950000,4);
 
 INSERT INTO employees (id, first_name, last_name, role_id, manager_id) 
 VALUES
