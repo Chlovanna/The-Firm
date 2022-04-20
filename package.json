@@ -1,0 +1,25 @@
+{
+  "name": "the-firm",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "'node index.js'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Chlovanna/The-Firm.git"
+  },
+  "author": "Ashley Lawrence",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Chlovanna/The-Firm/issues"
+  },
+  "homepage": "https://github.com/Chlovanna/The-Firm#readme",
+  "dependencies": {
+    "console.table": "^0.10.0",
+    "dotenv": "^16.0.0",
+    "inquirer": "^8.2.2",
+    "mysql2": "^2.3.3"
+  }
+}
