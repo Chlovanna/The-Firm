@@ -1,9 +1,11 @@
-const fs = require("fs");
+// const fs = require("fs");
+const cTable = require('console.table');
 const inquirer = require("inquirer");
-const mysql = require("mysql2");
+const db = require("./db/connection");
+
 
 const promptSelection = () => {
-  return inquirer
+  inquirer
     .prompt([
       {
         type: "list",
@@ -18,8 +20,8 @@ const promptSelection = () => {
           "add an employee",
           "update an employee role",
           "Thank you and Goodbye!",
-        ],
-      },
+        ]
+      }
     ])
     .then(({ selection }) => {
       if (selection === "view all departments") {
@@ -29,18 +31,110 @@ const promptSelection = () => {
       } else if (selection === "view all employees") {
         viewEmployees();
       } else if (selection === "add a department") {
-        addDepartment();
+        promptAddDepartment();
       } else if (selection === "add a role") {
-        addRoles();
+        promptAddRoles();
       } else if (selection === "add an employee role") {
-        viewRoles();
+        promptUpdateRoles();
       } else {
         console.log("Thank you and Goodbye!");
-        process.goodbye();
+        process.quit();
       }
     });
 };
 
-con
+const viewDepartments = () => {
+  db.query(
+    "SELECT * FROM departments;",
+    (err, results) => {
+      console.log('Here');
+      if(err) throw err;
+      console.table(results);
+      console.log('\n\n');
+      promptSelection();
+    }
+  )
+};
+
+
+const viewRoles = () => {
+  db.query(
+    "SELECT * FROM roles;",
+    (err, results) => {
+      console.table(results);
+      console.log('\n\n');
+      promptSelection();
+    }
+  )
+};
+
+const viewEmployees = () => {
+  db.query(
+    `SELECT 
+         e.id,
+         e.first_name,
+         e.last_name,
+         r.title,
+         d.department_name,
+         r.salary,
+         CONCAT (e2.first_name, " ",e2.last_name) AS manager, 
+    FROM employees e;`,  // ask the TAs for help
+    (err, results) => {
+      console.table(results);
+      console.log('\n\n');
+      promptSelection();
+    }
+  )
+};
+
+const promptAddDepartment = () => {
+  inquirer.prompt([{
+    type: "input",
+    name: "name", 
+    message: "Which department would you like to add?",
+    validate: departmentName => {
+      if (departmentName) {
+        return true;
+      }else {
+        console.log("Must enter your department name!");
+        return false;
+      }
+        
+      }
+    }
+  ])
+  .then(name => {
+    db.promise().query("INSERT INTO departments SET ?", name);
+    viewDepartments();
+  })
+}
+
+const promptAddRoles = () => {
+  return db.promise().query (
+    "SELECT department.id, department.name FROM department;"
+  )
+  .then()  //need help here
+} 
+
+// inquirer.prompt(
+//   [{
+//     type: "input",
+//     name: "title",
+//     message: "What is your title?",
+//     validate: titleName => {S
+//       if (titleName) {
+//         return true;
+//       } else{
+//         console.log("Must enter your title!");
+//         return false;
+//       }
+        
+//       }
+//     },
+//     {
+
+//     }
+//   }]
+// )
 
 promptSelection();
