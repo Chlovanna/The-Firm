@@ -1,6 +1,7 @@
 // const fs = require("fs");
 const cTable = require('console.table');
 const inquirer = require("inquirer");
+const { listenerCount } = require('process');
 const db = require("./db/connection");
 
 
@@ -47,7 +48,7 @@ const viewDepartments = () => {
   db.query(
     "SELECT * FROM departments;",
     (err, results) => {
-      console.log('Here');
+      // console.log('Here');
       if(err) throw err;
       console.table(results);
       console.log('\n\n');
@@ -78,7 +79,8 @@ const viewEmployees = () => {
          d.department_name,
          r.salary,
          CONCAT (e2.first_name, " ",e2.last_name) AS manager, 
-    FROM employees e;`,  // ask the TAs for help
+    FROM employees e JOIN role r ON e.role;`,  // ask the TAs for help
+    
     (err, results) => {
       console.table(results);
       console.log('\n\n');
@@ -116,25 +118,58 @@ const promptAddRoles = () => {
   .then()  //need help here
 } 
 
-// inquirer.prompt(
-//   [{
-//     type: "input",
-//     name: "title",
-//     message: "What is your title?",
-//     validate: titleName => {S
-//       if (titleName) {
-//         return true;
-//       } else{
-//         console.log("Must enter your title!");
-//         return false;
-//       }
+inquirer.prompt(
+  [{
+    type: "input",
+    name: "title",
+    message: "What is your title? (COMPULSORY)",
+    validate: titleName => {S
+      if (titleName) {
+        return true;
+      } else{
+        console.log("Must enter your title!");
+        return false;
+      }
         
-//       }
-//     },
-//     {
+      }
+    },
+    { type: "list",
+      name: "department",
+      message: "Please select your department",
+      chhoices: departmentOptions
 
-//     }
-//   }]
-// )
+    },
+    {
+      type: "input",
+      name: "salary",
+      message: "Please enter your salary (COMPULSORY)",
+      validate: salary => {
+        if(salary) {
+          return true;
+        } else{
+          console.log("Must enter your salary!");
+          return false;
+        }
+      }
+    }
+  ]
+)
+.then(({ title, department,salary}) => {
+// need help here
+"INSERT INTO roles SET?",
+{
+  title: title,
+  department_id: department,
+  salary: salary
+},
+function (err, res){
+  if (err) throw err;
+}
+} //?
+}).then(() => selectRoles())
+})
+}
+  }]
+)
 
 promptSelection();
