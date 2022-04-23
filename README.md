@@ -21,3 +21,7 @@ THEN I am prompted to select an employee to update and their new role and this i
 
 A visual demonstration
 https://watch.screencastify.com/v/mgqgsZZ5b7nFQBv2SbN9
+
+Node
+SQL
+Javascript
